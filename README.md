@@ -1,10 +1,7 @@
 # ColourStream Cron Bundle
 
 This bundle provides a simple interface for registering repeated scheduled
-tasks within your application, including support for installs where the host
-does not allow for command-line access (TODO).
-
-This bundle is tested only against Symfony 2.1. It will likely work with Symfony 2.0, but YMMV
+tasks within your application.
 
 ## Installation
 
