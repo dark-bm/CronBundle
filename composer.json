@@ -1,9 +1,8 @@
 {
-    "name": "colourstream/cron-bundle",
+    "name": "dark-bm/cron-bundle",
     "type": "symfony-bundle",
     "description": "This bundle provides scheduled execution of Symfony2 commands",
     "keywords": ["cron", "schedule", "time"],
-    "homepage": "http://github.com/predakanga/CronBundle",
     "license": "MIT",
     "authors": [
         {
