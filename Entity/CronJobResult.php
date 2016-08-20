@@ -34,7 +34,7 @@ class CronJobResult
     protected $runTime;
     
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer",nullable=true)
      * @var integer $result
      */
     protected $result;
@@ -148,9 +148,9 @@ class CronJobResult
     /**
      * Set job
      *
-     * @param ColourStream\Bundle\CronBundle\Entity\CronJob $job
+     * @param CronJob $job
      */
-    public function setJob(\ColourStream\Bundle\CronBundle\Entity\CronJob $job)
+    public function setJob(CronJob $job)
     {
         $this->job = $job;
     }
@@ -158,7 +158,7 @@ class CronJobResult
     /**
      * Get job
      *
-     * @return ColourStream\Bundle\CronBundle\Entity\CronJob 
+     * @return CronJob
      */
     public function getJob()
     {
