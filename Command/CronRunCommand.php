@@ -60,7 +60,7 @@ class CronRunCommand extends ContainerAwareCommand
         {
             $this->runJob($job, $output, $em);
         }
-        
+
         // Flush our results to the DB
         $em->flush();
         
@@ -121,7 +121,7 @@ class CronRunCommand extends ContainerAwareCommand
         }
         elseif($returnCode == CronJobResult::FAILED)
         {
-            $statusStr = "failed";
+            $statusStr = "failed Code:".$returnCode;
         }
         
         $durationStr = sprintf("%0.2f", $jobEnd-$jobStart);
@@ -129,24 +129,30 @@ class CronRunCommand extends ContainerAwareCommand
         
         // Record the result
         $this->recordJobResult($em, $job, $jobEnd-$jobStart, $jobOutput->getOutput(), $returnCode);
-        
+
         // And update the job with it's next scheduled time
-        $newTime = new \DateTime();
+        $newTime = $job->getNextRun();//new \DateTime();
         $newTime = $newTime->add(new \DateInterval($job->getInterval()));
-        $job->setNextRun($newTime);
+        $job_entity = $em->getRepository("ColourStreamCronBundle:CronJob")->find($job->getId());
+        $job_entity->setNextRun($newTime);
+        $em->persist($job_entity);
+        $em->flush();
     }
     
     protected function recordJobResult(EntityManager $em, CronJob $job, $timeTaken, $output, $resultCode)
     {
+        $job_entity = $em->getRepository("ColourStreamCronBundle:CronJob")->find($job->getId());
         // Create a new CronJobResult
         $result = new CronJobResult();
-        $result->setJob($job);
+        $result->setJob($job_entity);
         $result->setRunTime($timeTaken);
         $result->setOutput($output);
         $result->setResult($resultCode);
         
         // Then update associations and persist it
-        $job->setMostRecentRun($result);
+        $job_entity->setMostRecentRun($result);
+        $em->persist($job_entity);
         $em->persist($result);
+        $em->flush();
     }
 }
