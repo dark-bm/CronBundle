@@ -23,7 +23,7 @@ class CronJobRepository extends EntityRepository
                     ->createQuery("SELECT job FROM ColourStreamCronBundle:CronJob job
                                               WHERE job.nextRun <= :curTime
                                               AND job.enabled = 1
-                                              ORDER BY job.NextRun ASC")
+                                              ORDER BY job.nextRun ASC")
                     ->setParameter('curTime', new \DateTime())
                     ->getResult();
     }
