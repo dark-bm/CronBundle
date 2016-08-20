@@ -131,14 +131,15 @@ class CronRunCommand extends ContainerAwareCommand
         $this->recordJobResult($em, $job, $jobEnd-$jobStart, $jobOutput->getOutput(), $returnCode);
 
         // And update the job with it's next scheduled time
+        $newTime = $job->getNextRun();//new \DateTime();
+        $newTime = $newTime->add(new \DateInterval($job->getInterval()));
         $job_entity = $em->getRepository("ColourStreamCronBundle:CronJob")->find($job->getId());
         if($job->getInterval() == "ONCE"){
-            $job_entity->setEnabled(false);
+            $job_entity->setEnabled("false");
         }else{
-            $newTime = $job->getNextRun();
-            $newTime = $newTime->add(new \DateInterval($job->getInterval()));
             $job_entity->setNextRun($newTime);
         }
+
         $em->persist($job_entity);
         $em->flush();
     }
